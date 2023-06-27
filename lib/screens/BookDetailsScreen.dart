@@ -25,18 +25,14 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
 
   Future<void> fetchBookDetails() async {
     try {
-      final response = await http
-          .get(Uri.parse('https://7443-187-87-222-101.ngrok-free.app/api/users/books/${widget.book.id}'));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        setState(() {
-          bookDetails = data;
-        });
-      } else {
-        // Exibir mensagem de erro ou tratar de acordo com a resposta da API
-      }
+      final response = await http.get(Uri.parse(
+          'https://7443-187-87-222-101.ngrok-free.app/api/users/books/${widget.book.id}'));
+      final data = jsonDecode(response.body);
+      setState(() {
+        bookDetails = data;
+      });
     } catch (error) {
-      // Exibir mensagem de erro ou tratar de acordo com a exceção
+      print(error);
     }
   }
 
@@ -53,29 +49,29 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           children: [
             Text(
               'Título: ${widget.book.titulo}',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             if (widget.book.subTitulo != null &&
                 widget.book.subTitulo.isNotEmpty)
               Text(
                 'SubTítulo: ${widget.book.subTitulo}',
-                style: TextStyle(fontSize: 16.0),
+                style: const TextStyle(fontSize: 16.0),
               ),
             Text(
               'ISBN: ${widget.book.isbn}',
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             Text(
               'Ano: ${widget.book.ano}',
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             Text(
               'Autor: ${widget.book.autor}',
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             Text(
               'Editora: ${widget.book.editora}',
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
             Text(
               'Local: ${widget.book.local}',

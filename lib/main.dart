@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hackthon_biblioteca_2023/screens/AllBooksScreen.dart';
 import 'package:hackthon_biblioteca_2023/screens/LoginScreen.dart';
 import 'package:hackthon_biblioteca_2023/screens/MainMenuScreen.dart';
-import 'package:hackthon_biblioteca_2023/screens/StudentProfileScreen.dart';
 
 import 'assets/styles.dart';
 

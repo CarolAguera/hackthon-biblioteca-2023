@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'AllBooksScreen.dart';
+import '../models/Book.dart';
+import '../services/api_service.dart';
+import '../widgets/book_title.dart';
 import 'BookDetailsScreen.dart';
 
 class ReservedBooksScreen extends StatefulWidget {
-  final String studentId;
-
-  const ReservedBooksScreen({super.key, required this.studentId});
+  const ReservedBooksScreen({super.key});
 
   @override
   _ReservedBooksScreenState createState() => _ReservedBooksScreenState();
@@ -19,31 +19,25 @@ class _ReservedBooksScreenState extends State<ReservedBooksScreen> {
   @override
   void initState() {
     super.initState();
-    fetchReservedBooks();
+    _fetchReservedBooks();
   }
 
-  Future<void> fetchReservedBooks() async {
-    final response = await http.get(
-      Uri.parse(
-          'https://7443-187-87-222-101.ngrok-free.app/api/users/meus-livros'),
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      print(data);
+  void _fetchReservedBooks() async {
+    try {
+      var result = await ApiService().getAllMyBooks();
       setState(() {
-        reservedBooks = data['livros_reservados'];
+        reservedBooks = result;
       });
-    } else {
+    } catch (error) {
       showDialog(
         context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text('Erro'),
-          content: Text('Falha ao obter a lista de livros reservados.'),
+        builder: (context) => AlertDialog(
+          title: const Text('Erro ao buscar dados dos livros do estudante'),
+          content: const Text('Por favor, tente novamente.'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text('OK'),
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
             ),
           ],
         ),
@@ -55,21 +49,19 @@ class _ReservedBooksScreenState extends State<ReservedBooksScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Livros Reservados'),
+        title: const Text('Todos os Livros'),
       ),
       body: ListView.builder(
         itemCount: reservedBooks.length,
         itemBuilder: (ctx, index) {
-          final book = reservedBooks[index];
-
-          return ListTile(
-            title: Text(book['titulo']),
-            subtitle: Text(book['autor']),
+          final Book book = reservedBooks[index];
+          return BookTitle(
+            book: book,
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (ctx) => BookDetailsScreen(book: book),
+                  builder: (context) => BookDetailsScreen(book: book),
                 ),
               );
             },

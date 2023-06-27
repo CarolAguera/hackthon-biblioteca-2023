@@ -6,12 +6,15 @@ import '../models/Student.dart';
 import '../services/api_service.dart';
 
 class StudentProfileScreen extends StatefulWidget {
+  const StudentProfileScreen({super.key});
+
   @override
   _StudentProfileScreenState createState() => _StudentProfileScreenState();
 }
 
 class _StudentProfileScreenState extends State<StudentProfileScreen> {
   late Student studentData;
+
 
   @override
   void initState() {
@@ -26,13 +29,12 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         studentData = result;
       });
     } catch (error) {
-      print(error);
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Erro de login'),
+          title: const Text('Erro ao buscar dados de estudante'),
           content:
-              const Text('Credenciais inválidas. Por favor, tente novamente.'),
+              const Text('Por favor, tente novamente.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -65,6 +67,12 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   Text('RA: ${studentData.ra}'),
                   const SizedBox(height: 8),
                   Text('Curso: ${studentData.curso}'),
+                  const SizedBox(height: 8),
+                  Text('Endereço: ${studentData.endereco}'),
+                  const SizedBox(height: 8),
+                  Text('Cidade: ${studentData.cidade}'),
+                  const SizedBox(height: 8),
+                  Text('Estado: ${studentData.estado}'),
                 ],
               ),
             )

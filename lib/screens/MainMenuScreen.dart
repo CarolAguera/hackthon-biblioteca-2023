@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackthon_biblioteca_2023/screens/AllBooksScreen.dart';
 import 'package:hackthon_biblioteca_2023/screens/StudentProfileScreen.dart';
 
+import 'ReservedBooksScreen.dart';
+
 class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,12 @@ class MainMenuScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.orange),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -24,20 +32,32 @@ class MainMenuScreen extends StatelessWidget {
               },
               child: const Text('Ver Dados do Aluno Logado'),
             ),
-            // SizedBox(height: 16),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => StudentBooksScreen(token: token),
-            //       ),
-            //     );
-            //   },
-            //   child: Text('Ver Livros do Aluno Logado'),
-            // ),
             const SizedBox(height: 16),
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.red),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ReservedBooksScreen(),
+                  ),
+                );
+              },
+              child: Text('Ver Livros do Aluno Logado'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                MaterialStateProperty.all<Color>(Colors.blue),
+                foregroundColor:
+                MaterialStateProperty.all<Color>(Colors.white),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,

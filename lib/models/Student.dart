@@ -6,7 +6,7 @@ class Student {
   final String cidade;
   final String estado;
   final int telefone;
-  final Course curso;
+  final String curso;
 
   Student({
     required this.id,
@@ -18,10 +18,4 @@ class Student {
     required this.telefone,
     required this.curso,
   });
-}
-
-class Course {
-  final String nome;
-
-  Course({required this.nome});
 }
