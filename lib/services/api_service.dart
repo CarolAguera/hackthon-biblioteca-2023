@@ -4,11 +4,10 @@ import 'package:http/http.dart' as http;
 import '../models/Book.dart';
 
 class ApiService {
-  static const String baseUrl =
-      'https://7443-187-87-222-101.ngrok-free.app/api/users/books';
+  static const String baseUrl = 'https://7443-187-87-222-101.ngrok-free.app';
 
   Future<List<Book>> getAllBooks() async {
-    final response = await http.get(Uri.parse(baseUrl));
+    final response = await http.get(Uri.parse('$baseUrl/api/users/books'));
 
     if (response.statusCode == 200) {
       var responseBody = response.body;
@@ -45,8 +44,7 @@ class ApiService {
   }
 
   Future<dynamic> loginAluno(String ra, String senha) async {
-    var url =
-        Uri.parse('https://7443-187-87-222-101.ngrok-free.app/api/users/login');
+    var url = Uri.parse('$baseUrl/api/users/login');
 
     var response = await http.post(url,
         body: json.encode({
@@ -59,6 +57,17 @@ class ApiService {
       var token = responseData['token'];
 
       return token;
+    } else {
+      throw Exception('Falha no login');
+    }
+  }
+
+  Future<void> fetchStudentData() async {
+    var url = Uri.parse('$baseUrl/api/users/meus-dados');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var responseData = json.decode(response.body);
     } else {
       throw Exception('Falha no login');
     }

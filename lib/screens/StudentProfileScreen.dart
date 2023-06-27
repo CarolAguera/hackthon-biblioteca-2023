@@ -17,36 +17,8 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
   @override
   void initState() {
     super.initState();
-    fetchStudentData();
   }
 
-  Future<void> fetchStudentData() async {
-    final response = await http.get(
-      Uri.parse('URL_DA_API/alunos/${widget.studentId}'),
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-
-      setState(() {
-        studentData = data['aluno'];
-      });
-    } else {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text('Erro'),
-          content: Text('Falha ao obter os dados do aluno.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
