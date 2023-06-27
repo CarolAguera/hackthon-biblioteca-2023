@@ -21,9 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         var token = await ApiService().loginAluno(_ra, _senha);
-        Navigator.pushReplacementNamed(context, '/books');
+        Navigator.pushReplacementNamed(context, '/menu');
       } catch (error) {
-        print(error);
         showDialog(
           context: context,
           builder: (context) =>

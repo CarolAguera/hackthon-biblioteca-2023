@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:hackthon_biblioteca_2023/models/Student.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/Book.dart';
 
 class ApiService {
-  static const String baseUrl = 'https://7443-187-87-222-101.ngrok-free.app';
+  static const String baseUrl = 'https://7d19-187-87-222-101.ngrok-free.app';
 
   Future<List<Book>> getAllBooks() async {
     final response = await http.get(Uri.parse('$baseUrl/api/users/books'));
@@ -43,6 +45,16 @@ class ApiService {
     }
   }
 
+  Future<void> saveToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+  }
+
+  Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
   Future<dynamic> loginAluno(String ra, String senha) async {
     var url = Uri.parse('$baseUrl/api/users/login');
 
@@ -51,10 +63,11 @@ class ApiService {
           "ra": 123456.toString(),
           "senha": "234234",
         }));
-
+    print(response.body);
     if (response.statusCode == 200) {
       var responseData = json.decode(response.body);
       var token = responseData['token'];
+      await saveToken(token);
 
       return token;
     } else {
@@ -62,9 +75,10 @@ class ApiService {
     }
   }
 
-  Future<void> fetchStudentData() async {
+  Future<dynamic> fetchStudentData() async {
     var url = Uri.parse('$baseUrl/api/users/meus-dados');
-    final response = await http.get(url);
+    var headers = {'Authorization': 'Bearer ${getToken()}'};
+    final response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
       var responseData = json.decode(response.body);

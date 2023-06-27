@@ -7,7 +7,7 @@ import 'BookDetailsScreen.dart';
 class ReservedBooksScreen extends StatefulWidget {
   final String studentId;
 
-  const ReservedBooksScreen({required this.studentId});
+  const ReservedBooksScreen({super.key, required this.studentId});
 
   @override
   _ReservedBooksScreenState createState() => _ReservedBooksScreenState();

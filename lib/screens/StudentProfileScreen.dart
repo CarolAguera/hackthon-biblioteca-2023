@@ -2,23 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/Student.dart';
+import '../services/api_service.dart';
+
 class StudentProfileScreen extends StatefulWidget {
-  final String studentId;
-
-  const StudentProfileScreen({required this.studentId});
-
   @override
   _StudentProfileScreenState createState() => _StudentProfileScreenState();
 }
 
 class _StudentProfileScreenState extends State<StudentProfileScreen> {
-  dynamic studentData;
+  late Student studentData;
 
   @override
   void initState() {
     super.initState();
+    _dadosUser();
   }
 
+  void _dadosUser() async {
+    try {
+      var result = await ApiService().fetchStudentData();
+      setState(() {
+        studentData = result;
+      });
+    } catch (error) {
+      print(error);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Erro de login'),
+          content:
+              const Text('Credenciais inválidas. Por favor, tente novamente.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +52,25 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       ),
       body: studentData != null
           ? Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Nome: ${studentData['nome']}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Nome: ${studentData.nome}',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text('RA: ${studentData.ra}'),
+                  const SizedBox(height: 8),
+                  Text('Curso: ${studentData.curso}'),
+                ],
+              ),
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
             ),
-            SizedBox(height: 8),
-            Text('RA: ${studentData['ra']}'),
-            SizedBox(height: 8),
-            Text('Curso: ${studentData['curso']}'),
-            // Exiba outros detalhes relevantes do aluno aqui
-          ],
-        ),
-      )
-          : Center(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }
